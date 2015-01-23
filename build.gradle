@@ -1,0 +1,30 @@
+//apply plugin: 'java'
+apply plugin: 'groovy'
+apply plugin: 'idea'
+apply plugin: 'maven'
+//apply plugin: 'application'
+
+//mainClassName = "com.github.filipmalczak.learningsystems.lab6_ensemble.Experiments"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Common dependencies
+    compile 'org.codehaus.groovy:groovy-all:2.4.0'
+    compile 'org.slf4j:slf4j-api:1.7.2'
+
+    testCompile 'junit:junit:4.11'
+
+    runtime 'org.slf4j:slf4j-log4j12:1.7.2'
+
+}
+
+test {
+    useJUnit()
+}
+
+task wrapper(type: Wrapper){
+    gradleVersion = '1.12'
+}
