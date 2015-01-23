@@ -9,12 +9,18 @@ class Workspace {
     final File resultsDir
     final File renderDir
     final File rawDir
+    final File dslDir
 
     Workspace(File root) {
         this.root = root
         resultsDir = new File(root, "results")
         renderDir = new File(root, "render")
         rawDir = new File(root, "raw")
+        dslDir = new File(root, "dsl")
+        if (!resultsDir.exists()) resultsDir.mkdirs()
+        if (!renderDir.exists()) renderDir.mkdirs()
+        if (!rawDir.exists()) rawDir.mkdirs()
+        if (!dslDir.exists()) dslDir.mkdirs()
     }
 
 
@@ -28,6 +34,10 @@ class Workspace {
 
     File rawFile(String... path) {
         resolve(rawDir, path)
+    }
+
+    File dslFile(String... path){
+        resolve(dslDir, path)
     }
 
     static File resolve(File root, String[] path) {

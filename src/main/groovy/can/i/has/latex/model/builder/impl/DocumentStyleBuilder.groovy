@@ -1,7 +1,8 @@
-package can.i.has.latex.model.builder
+package can.i.has.latex.model.builder.impl
 
 import can.i.has.latex.model.DocumentStyle
-import can.i.has.latex.model.builder.AbstractTypeBuilder.AbstractHelper
+import can.i.has.latex.model.builder.impl.AbstractTypeBuilder.AbstractHelper
+import can.i.has.latex.model.builder.Builder
 
 import groovy.transform.Canonical
 
@@ -31,6 +32,10 @@ class DocumentStyleBuilder extends AbstractTypeBuilder<DocumentStyle>{
 
         List<String> getOptions(){
             object.options
+        }
+
+        void options(List<String> options){
+            object.options = options
         }
 
         void clazz(String clazz){

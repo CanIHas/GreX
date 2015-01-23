@@ -1,4 +1,4 @@
-package can.i.has.latex.model.builder
+package can.i.has.latex.model.builder.impl
 
 abstract class AbstractTypeBuilder<T> {
     T build(Map props, Closure closure){
