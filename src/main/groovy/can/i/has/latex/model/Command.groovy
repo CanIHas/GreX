@@ -1,0 +1,21 @@
+package can.i.has.latex.model
+
+import groovy.transform.Canonical
+
+@Canonical
+class Command implements Renderable{
+
+    String name
+    List<String> options
+    List<Renderable> args
+
+    @Override
+    String render() {
+        def out = "\\" << name
+        if (options)
+            out << "[" << options.join(",") << "]"
+        if (args)
+            out << args.collect { "{${it.render()}}" }.join("")
+        out.toString()
+    }
+}

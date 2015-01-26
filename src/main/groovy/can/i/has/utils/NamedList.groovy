@@ -1,4 +1,4 @@
-package can.i.has.latex.utils
+package can.i.has.utils
 
 import groovy.transform.Canonical
 

@@ -1,4 +1,4 @@
-package can.i.has.latex.experiments
+package can.i.has.experiments
 
 import groovy.io.FileType
 import groovy.transform.Canonical

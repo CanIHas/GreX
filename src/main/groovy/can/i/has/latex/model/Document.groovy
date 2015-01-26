@@ -1,30 +1,54 @@
 package can.i.has.latex.model
 
-import groovy.transform.Canonical
+import groovy.transform.EqualsAndHashCode
+import groovy.transform.ToString
 
-@Canonical
-class Document extends LaTeXContainer{
-    DocumentStyle style
+import static can.i.has.latex.Commands.documentClass as DC
+import static can.i.has.latex.Groups.documentEnv
 
-    @Override
-    String getHeader(){
-        """\\documentclass${style.render()}
-\\begin{document}"""
+@EqualsAndHashCode
+@ToString
+class Document implements Renderable{
+    final Command documentClass
+    final List<Command> preamble = []
+    final Environment env = documentEnv()
+
+    Document(Command documentClass=DC(), List<Command> preamble=[], List<Renderable> content=[]) {
+        this.documentClass = documentClass
+        this.preamble += preamble
+        this.env.content += content
     }
 
     @Override
-    String getHeaderContentSeparator(){
-        "\n"
+    String render() {
+        ([documentClass] + preamble).collect { it.render() }.join("""
+""")+"""
+"""+env.render()
     }
 
-    @Override
-    String getContentFooterSeparator(){
-        "\n"
+    Document withPreamble(Closure c){
+//        def oldDelegate = c.delegate
+//        try {
+//            c.resolveStrategy = Closure.DELEGATE_FIRST
+//            c.delegate = preamble
+//            this
+//        } finally {
+//            c.delegate = oldDelegate
+//        }
+        c(preamble)
+        this
     }
 
-    @Override
-    String getFooter(){
-        "\\end{document}"
+    Document withContent(Closure c){
+//        def oldDelegate = c.delegate
+//        try {
+//            c.resolveStrategy = Closure.DELEGATE_FIRST
+//            c.delegate = env
+//            this
+//        } finally {
+//            c.delegate = oldDelegate
+//        }
+        c(env.content)
+        this
     }
-
 }

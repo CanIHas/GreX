@@ -1,6 +1,6 @@
-package can.i.has.latex.experiments
+package can.i.has.experiments
 
-import can.i.has.latex.utils.NamedList
+import can.i.has.utils.NamedList
 
 
 interface Result extends Serializable{

@@ -1,4 +1,6 @@
-package can.i.has.latex.experiments
+package can.i.has.experiments
+
+import can.i.has.utils.LaTeXCompilerUtils
 
 import groovy.transform.Canonical
 
@@ -10,6 +12,7 @@ class Workspace {
     final File renderDir
     final File rawDir
     final File dslDir
+    final File buildDir
 
     Workspace(File root) {
         this.root = root
@@ -17,10 +20,12 @@ class Workspace {
         renderDir = new File(root, "render")
         rawDir = new File(root, "raw")
         dslDir = new File(root, "dsl")
+        buildDir = new File(root, "build")
         if (!resultsDir.exists()) resultsDir.mkdirs()
         if (!renderDir.exists()) renderDir.mkdirs()
         if (!rawDir.exists()) rawDir.mkdirs()
         if (!dslDir.exists()) dslDir.mkdirs()
+        if (!buildDir.exists()) buildDir.mkdirs()
     }
 
 
@@ -40,12 +45,44 @@ class Workspace {
         resolve(dslDir, path)
     }
 
+    File buildFile(String... path){
+        resolve(buildDir, path)
+    }
+
     static File resolve(File root, String[] path) {
         File out = root
         path.each {
             out = new File(out, it)
         }
         out
+    }
+
+    void compile(String... path){
+        LaTeXCompilerUtils.compile(renderFile(path), buildFile(path.reverse().tail().reverse()))
+    }
+
+    static String[] dirPath(String... path){
+        path[0..-2]
+    }
+
+    static String[] relativePath(File root, File file){
+        root.toURI().relativize( file.toURI() ).toString().split(File.separator)
+    }
+
+    void compileAll(){
+        renderDir.eachFileRecurse { File f ->
+            if (f.file)
+                LaTeXCompilerUtils.compile(f,
+                    buildFile(
+                        dirPath(
+                            relativePath(
+                                renderDir,
+                                f
+                            )
+                        )
+                    )
+                )
+        }
     }
 
     @Singleton
