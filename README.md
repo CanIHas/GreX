@@ -23,11 +23,11 @@ maven repo in the future).
 
 Next step is choosing workspace. Workspace is a directory in which all data will be kept. It is by default
 set up with subdirectories:
-* raw - containing files with raw LaTeX code to be inserted into document
-* dsl - containing files with Builder DSL (see below) to be evaluated
-* results - this will contain all results of experiments, grouped by experiment name
-* render - all renders will be saved here
-* build - render compilation will be
+* raw - containing files with raw LaTeX code to be inserted into document,
+* dsl - containing files with Builder DSL (see below) to be evaluated,
+* results - this will contain all results of experiments, grouped by experiment name,
+* render - all renders will be saved here,
+* build - while compiling renders, output will be stored here.
 
 Then you write your script. Start with setting up [*Workspace*](/src/main/groovy/can/i/has/latex/experiments/Workspace.groovy), using its manager:
 
