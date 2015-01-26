@@ -1,5 +1,5 @@
 > Disclaimer: I focus on development, not documenting it on-line, while writing. This README will always have summary
-> up-to-date, but usage and other details may be outdated. I'll try my best to be this as informative as possible,
+> up-to-date, but usage and other details may be outdated. I'll try my best to make this as informative as possible,
 > but best way to see what's what is reading tests - I'm usually providing test suite that is meant to cover
 > usual scenarios, so it can also be base for snippets.
 
