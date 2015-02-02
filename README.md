@@ -47,6 +47,13 @@ written with fluent API in mind. See linked tests, to get a grip.
 When you've got your *Document*, you can render it. Rendering means generating String with LaTeX code from
 data. At the moment render() returns String, but it will be saved in workspace.
 
-# Experiments
+# Example
 
-As stated above - big TODO
+Just see [example package](/src/main/groovy/can/i/has/experiments/example), especially
+[Experiments script](/src/main/groovy/can/i/has/experiments/example/Experiments.groovy).
+
+It will generate LaTeX document containing report for one of my university courses. It isn't really
+well-written, neither it is optimal, but it shows main use case in raw code.
+
+At this moment it is not complete, as many needed functionalities (table and graph models, their conversion
+to LaTeX, etc) are lacking, but I'm gonna fill it in.

@@ -1,10 +1,9 @@
-//apply plugin: 'java'
 apply plugin: 'groovy'
 apply plugin: 'idea'
 apply plugin: 'maven'
-//apply plugin: 'application'
+apply plugin: 'application'
 
-//mainClassName = "com.github.filipmalczak.learningsystems.lab6_ensemble.Experiments"
+mainClassName = "can.i.has.experiments.example.Experiments"
 
 repositories {
     mavenCentral()

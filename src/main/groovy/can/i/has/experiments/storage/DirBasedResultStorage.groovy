@@ -1,27 +1,41 @@
-package can.i.has.experiments
+package can.i.has.experiments.storage
+
+import can.i.has.experiments.Result
 
 import groovy.io.FileType
+import groovy.json.JsonBuilder
 import groovy.transform.Canonical
 
 @Canonical
-class ExperimentMemory<R extends Result>{
+class DirBasedResultStorage<R extends Result> implements ResultsStorage<R>{
     String name
-    Workspace workspace
+    File dataDir
 
-    protected @Lazy File dataDir = workspace.resultFile(name)
 
-    boolean exists(String key){
+    boolean contains(String key){
         new File(dataDir, key+".obj").exists()
+    }
+
+    protected File file(String key){
+        new File(dataDir, key+".obj")
     }
 
     R getAt(String key){
         new File(dataDir, key+".obj").withObjectInputStream(this.class.classLoader) { ObjectInputStream ois ->
             (R) ois.readObject()
         }
+
     }
 
     void putAt(String key, R result){
-        new File(dataDir, key+".obj").withObjectOutputStream { ObjectOutputStream oos ->
+        def dest = file(key)
+        if (!dest.exists()) {
+            dataDir.mkdirs()
+            dest.createNewFile()
+        }
+//        dest.text = new JsonBuilder(this).toPrettyString()
+        dest.withObjectOutputStream { ObjectOutputStream oos ->
+            assert result instanceof Serializable
             oos.writeObject(result)
         }
     }

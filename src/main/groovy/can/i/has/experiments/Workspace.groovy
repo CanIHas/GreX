@@ -1,10 +1,14 @@
 package can.i.has.experiments
 
+import can.i.has.experiments.storage.DirBasedResultStorage
+import can.i.has.experiments.storage.ResultsStorage
 import can.i.has.utils.LaTeXCompilerUtils
 
-import groovy.transform.Canonical
+import groovy.transform.EqualsAndHashCode
+import groovy.transform.ToString
 
-@Canonical
+@EqualsAndHashCode
+@ToString
 class Workspace {
     final File root
 
@@ -83,6 +87,10 @@ class Workspace {
                     )
                 )
         }
+    }
+
+    public <R extends Result> ResultsStorage<R> newStorage(String name, Class<R> resultClass){
+        new DirBasedResultStorage<R>(name, resultFile(name))
     }
 
     @Singleton
