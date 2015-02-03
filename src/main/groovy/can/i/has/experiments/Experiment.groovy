@@ -22,7 +22,7 @@ class Experiment<R extends Result> {
                 experimentRunner.runWithCallback(key, {
                     def out = resultsStorage.contains(key) ?
                         resultsStorage[key] :
-                        experimentBody.call(config)
+                        experimentBody.call(key, config)
                     out.key = key
                     out.config = config
                     return out

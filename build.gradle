@@ -13,6 +13,7 @@ dependencies {
     // Common dependencies
     compile 'org.codehaus.groovy:groovy-all:2.4.0'
     compile 'org.slf4j:slf4j-api:1.7.2'
+    compile 'de.ruedigermoeller:fst:2.20'
 
     testCompile 'junit:junit:4.11'
 

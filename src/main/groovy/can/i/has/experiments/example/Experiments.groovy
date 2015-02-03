@@ -56,7 +56,8 @@ try {
          "all",
         workspace.newStorage("all", Evaluation),
         new FullSearchYield<Evaluation>(params, domains, values)
-    ).runWith(new SingleThreadExperimentRunner<Evaluation>()) { NamedList config ->
+    ).runWith(new SingleThreadExperimentRunner<Evaluation>()) { String key, NamedList config ->
+        println "config key: $key"
         DataSet clean = config["dataSet"].cleanSet
         def knn = new Knn(config["input"], config["k"], config["distance"](clean))
         def out = CrossValidation.evaluate(knn, clean, config["folds"])

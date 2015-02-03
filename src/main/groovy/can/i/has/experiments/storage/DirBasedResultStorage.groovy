@@ -1,6 +1,8 @@
 package can.i.has.experiments.storage
 
 import can.i.has.experiments.Result
+import can.i.has.experiments.storage.serialization.FSTSerializer
+import can.i.has.experiments.storage.serialization.ResultSerializer
 
 import groovy.io.FileType
 import groovy.json.JsonBuilder
@@ -10,7 +12,7 @@ import groovy.transform.Canonical
 class DirBasedResultStorage<R extends Result> implements ResultsStorage<R>{
     String name
     File dataDir
-
+    ResultSerializer<R> serializer = FSTSerializer.default
 
     boolean contains(String key){
         new File(dataDir, key+".obj").exists()
@@ -21,9 +23,10 @@ class DirBasedResultStorage<R extends Result> implements ResultsStorage<R>{
     }
 
     R getAt(String key){
-        new File(dataDir, key+".obj").withObjectInputStream(this.class.classLoader) { ObjectInputStream ois ->
-            (R) ois.readObject()
-        }
+        serializer.deserialize(new File(dataDir, key+".obj").bytes)
+//            withObjectInputStream(this.class.classLoader) { ObjectInputStream ois ->
+//            (R) ois.readObject()
+//        }
 
     }
 
@@ -33,11 +36,12 @@ class DirBasedResultStorage<R extends Result> implements ResultsStorage<R>{
             dataDir.mkdirs()
             dest.createNewFile()
         }
+        dest.bytes = serializer.serialize(result)
 //        dest.text = new JsonBuilder(this).toPrettyString()
-        dest.withObjectOutputStream { ObjectOutputStream oos ->
-            assert result instanceof Serializable
-            oos.writeObject(result)
-        }
+//        dest.withObjectOutputStream { ObjectOutputStream oos ->
+//            assert result instanceof Serializable
+//            oos.writeObject(result)
+//        }
     }
 
     /**
@@ -46,7 +50,7 @@ class DirBasedResultStorage<R extends Result> implements ResultsStorage<R>{
      */
     void eachResult(Closure<Void> closure) {
         dataDir.eachFile(FileType.FILES) { File f ->
-            closure(f.withObjectInputStream(this.class.classLoader) { (R) it.readObject() } )
+            closure(serializer.deserialize(f.bytes))
         }
     }
 }
