@@ -1,25 +1,26 @@
 package can.i.has.experiments.storage
 
 import can.i.has.experiments.Result
+import can.i.has.utils.OrderedMap
 
 import groovy.transform.Canonical
 
 @Canonical
 class InMemoryStorage<R extends Result> implements ResultsStorage<R>{
-    Map<String, R> delegate
+    Map<OrderedMap<String>, R> delegate
 
     @Override
-    boolean contains(String key) {
+    boolean contains(OrderedMap<String> key) {
         delegate.containsKey(key)
     }
 
     @Override
-    R getAt(String key) {
+    R getAt(OrderedMap<String> key) {
         delegate[key]
     }
 
     @Override
-    void putAt(String key, R result) {
+    void putAt(OrderedMap<String> key, R result) {
         delegate[key] = result
     }
 

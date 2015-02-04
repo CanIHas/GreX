@@ -3,6 +3,8 @@ package can.i.has.experiments.storage
 import can.i.has.experiments.Result
 import can.i.has.experiments.storage.serialization.FSTSerializer
 import can.i.has.experiments.storage.serialization.ResultSerializer
+import can.i.has.latex.model.StringRenderable
+import can.i.has.utils.OrderedMap
 
 import groovy.io.FileType
 import groovy.json.JsonBuilder
@@ -14,23 +16,27 @@ class DirBasedResultStorage<R extends Result> implements ResultsStorage<R>{
     File dataDir
     ResultSerializer<R> serializer = FSTSerializer.default
 
-    boolean contains(String key){
-        new File(dataDir, key+".obj").exists()
+    boolean contains(OrderedMap<String> key){
+        file(key).exists()
     }
 
-    protected File file(String key){
-        new File(dataDir, key+".obj")
+    protected String filename(OrderedMap<String> key){
+        key.valuesList().join(".")
     }
 
-    R getAt(String key){
-        serializer.deserialize(new File(dataDir, key+".obj").bytes)
+    protected File file(OrderedMap<String> key){
+        new File(dataDir, filename(key)+".obj")
+    }
+
+    R getAt(OrderedMap<String> key){
+        serializer.deserialize(file(key).bytes)
 //            withObjectInputStream(this.class.classLoader) { ObjectInputStream ois ->
 //            (R) ois.readObject()
 //        }
 
     }
 
-    void putAt(String key, R result){
+    void putAt(OrderedMap<String> key, R result){
         def dest = file(key)
         if (!dest.exists()) {
             dataDir.mkdirs()

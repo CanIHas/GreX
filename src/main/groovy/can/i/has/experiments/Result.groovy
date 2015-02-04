@@ -1,11 +1,11 @@
 package can.i.has.experiments
 
-import can.i.has.utils.NamedList
+import can.i.has.utils.OrderedMap
 
 
-trait Result implements Serializable{
-    abstract void setKey(String key)
-    abstract String getKey()
-    abstract void setConfig(NamedList list)
-    abstract NamedList getConfig()
+interface Result extends Serializable{
+    void setKey(OrderedMap<String> key)
+    OrderedMap<String> getKey()
+//    void setConfig(OrderedMap list)
+//    OrderedMap getConfig()
 }

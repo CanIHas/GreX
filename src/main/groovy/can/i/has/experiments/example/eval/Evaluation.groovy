@@ -1,13 +1,17 @@
 package can.i.has.experiments.example.eval
 
 import can.i.has.experiments.Result
-import can.i.has.utils.NamedList
+import can.i.has.utils.OrderedMap
+
+import groovy.transform.Canonical
+import groovy.util.logging.Slf4j
 
 import static java.lang.Math.abs
 
+@Canonical
 class Evaluation implements Result{
-    String key
-    NamedList config
+    OrderedMap<String> key
+//    OrderedMap config
     Map<String, TestOutcome> resultsForClass = [:]
 
     public Evaluation(List<String> classDomain){
@@ -44,7 +48,7 @@ class Evaluation implements Result{
 
     public int getInstancesCount(){
         int out=0
-        resultsForClass[(resultsForClass.keySet() as List).head()].with {
+        resultsForClass.get((resultsForClass.keySet() as List)?.head())?.with {
             out += tp + tn + fp + fn
         }
         out
@@ -139,13 +143,13 @@ class Evaluation implements Result{
         ["weightedTPRate", "weightedFPRate", "weightedAccuracy", "weightedPrecision", "weightedRecall", "F"].join(";")
     }
 
-    @Override
-    public String toString(){
+    String getJson(){
         "{" +
             "'TP': $weightedTPRate, 'FP': $weightedFPRate, " +
             "'Acc': $weightedAccuracy, 'Prec': $weightedPrecision, 'Rec': $weightedRecall, " +
             "'F': $weightedFMeasure" +
             "}"
     }
+
 
 }

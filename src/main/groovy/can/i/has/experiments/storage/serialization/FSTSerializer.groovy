@@ -13,7 +13,7 @@ import groovy.transform.Canonical
 class FSTSerializer<R extends Result> implements ResultSerializer<R>{
 
 
-    FSTConfiguration conf = FSTConfiguration.createStructConfiguration()
+    FSTConfiguration conf = FSTConfiguration.createDefaultConfiguration()
 
     @Override
     byte[] serialize(R result) {

@@ -3,8 +3,7 @@ package can.i.has.experiments
 import can.i.has.experiments.condition.Condition
 import can.i.has.experiments.config.ConfigYield
 import can.i.has.experiments.storage.ResultsStorage
-import can.i.has.utils.NamedList
-import jdk.nashorn.internal.codegen.CompilerConstants
+import can.i.has.utils.OrderedMap
 
 import groovy.transform.Canonical
 import groovy.util.logging.Slf4j
@@ -97,7 +96,7 @@ class ExperimentRunnerRoutines {
     }
 
     static <R extends Result> Closure<R> using(Closure<R> closure, ResultsStorage<R> storage){
-        return { String key, NamedList config ->
+        return { String key, OrderedMap config ->
             if (!storage.contains(key))
                 storage << closure.call(key, config)
             return storage[key]

@@ -10,6 +10,7 @@ class Commands {
         new Command("documentclass", options, [new StringRenderable(style)])
     }
 
+
     static Command begin(String text, Renderable... renderables){
         new Command("begin", [], [new StringRenderable(text)]+renderables.toList())
     }

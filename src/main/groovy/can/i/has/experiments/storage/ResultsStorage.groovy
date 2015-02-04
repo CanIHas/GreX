@@ -1,13 +1,14 @@
 package can.i.has.experiments.storage
 
 import can.i.has.experiments.Result
+import can.i.has.utils.OrderedMap
 
 trait ResultsStorage<R extends Result>{
-    abstract boolean contains(String key)
+    abstract boolean contains(OrderedMap<String> key)
 
-    abstract R getAt(String key)
+    abstract R getAt(OrderedMap<String> key)
 
-    abstract void putAt(String key, R result)
+    abstract void putAt(OrderedMap<String> key, R result)
 
     /**
      *
