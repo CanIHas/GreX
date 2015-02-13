@@ -27,5 +27,8 @@ class Commands {
         new Command("emph", [], [new StringRenderable(text)])
     }
 
+    static Command usePackage(String pkgName, String... options){
+        new Command("usepackage", options.toList(), [ new StringRenderable(pkgName) ])
+    }
 
 }

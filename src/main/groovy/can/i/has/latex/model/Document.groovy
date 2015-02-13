@@ -4,6 +4,7 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 
 import static can.i.has.latex.Commands.documentClass as DC
+import static can.i.has.latex.Commands.usePackage
 import static can.i.has.latex.Groups.documentEnv
 
 @EqualsAndHashCode
@@ -21,9 +22,14 @@ class Document implements Renderable{
 
     @Override
     String render() {
-        ([documentClass] + preamble).collect { it.render() }.join("""
+        ([documentClass] + neededPackages.collect {usePackage(it)} + preamble).collect { it.render() }.join("""
 """)+"""
 """+env.render()
+    }
+
+    @Override
+    Set<String> getNeededPackages() {
+        env.neededPackages
     }
 
     Document withPreamble(Closure c){

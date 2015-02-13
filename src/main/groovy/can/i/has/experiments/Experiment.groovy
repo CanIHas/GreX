@@ -4,7 +4,7 @@ import can.i.has.experiments.config.ConfigBatch
 import can.i.has.experiments.config.ConfigYield
 import can.i.has.experiments.runner.ExperimentRunner
 import can.i.has.experiments.storage.ResultsStorage
-import can.i.has.tables.ColumnTable
+import can.i.has.tables.trash.old_tables.ColumnTable
 import can.i.has.utils.OrderedMap
 
 import groovy.transform.Canonical

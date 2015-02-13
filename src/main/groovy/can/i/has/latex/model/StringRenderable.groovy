@@ -10,4 +10,9 @@ class StringRenderable implements Renderable{
     String render() {
         text
     }
+
+    @Override
+    Set<String> getNeededPackages() {
+        [].toSet()
+    }
 }

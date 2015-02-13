@@ -1,52 +1,70 @@
 package can.i.has.tables
 
+import groovy.transform.Canonical
 
+import static java.lang.Math.max
+
+@Canonical
 class Border {
-    static enum Style {
-        NONE("", ""),
-        SINGLE("|", "\\hline"),
-        DOUBLE("||", "\\hline\n\\hline"),
-        TRIPLE("|||", "\\hline\n\\hline\n\\hline")
+    //todo: ensure domains (0, 1, 2)
+    int top = 1
+    int bottom = 1
+    int left = 1
+    int right = 1
 
-        final String vertical
-        final String horizontal
-
-        Style(String vertical, String horizontal){
-            this.vertical = vertical
-            this.horizontal = horizontal
-        }
+    String getLeftSeparator(){
+        "|"*left
+    }
+    String getRightSeparator(){
+        "|"*right
     }
 
-    static enum Part {
-        TOP,
-        BOTTOM,
-        LEFT,
-        RIGHT,
-        ROWS,
-        COLUMNS,
-        HEADER_ROW,
-        HEADER_COLUMN,
-        MIDHEADER_ROW,
-        MIDHEADER_COLUMN
+    String getTopRecomendedSeparator(){
+        getLineOfWidth(top)
     }
 
-    static Map<Part, Style> defaultBorder() {
-        return [
-            (Part.TOP): Style.SINGLE,
-            (Part.BOTTOM): Style.SINGLE,
-            (Part.LEFT): Style.SINGLE,
-            (Part.RIGHT): Style.SINGLE,
-            (Part.ROWS): Style.SINGLE,
-            (Part.COLUMNS): Style.SINGLE,
-            (Part.HEADER_ROW): Style.DOUBLE,
-            (Part.HEADER_COLUMN): Style.DOUBLE,
-            (Part.MIDHEADER_ROW): Style.SINGLE,
-            (Part.MIDHEADER_COLUMN): Style.SINGLE,
-        ]
+    String getBottomRecomendedSeparator(){
+        getLineOfWidth(bottom)
     }
 
-    static void injectDefaults(Map<Part, Style> borderStyle){
-        defaultBorder().each { k, v -> borderStyle[k] = v }
+    static final protected List<String> lines = ["~", "-", "="].asImmutable()
+
+    static String getLineOfWidth(int width){
+        lines[width]
+//        switch (width) { // how the hell would I think of this? oO
+//            case 0: return "~"
+//            case 1: return "-"
+//            case 2: return "="
+//        }
     }
 
+    /**
+     * "above" row
+     * "this" row
+     * @param above
+     * @return
+     */
+    String getBordeWithCellAbove(Border above){
+        getLineOfWidth(max(above.bottom, top))
+    }
+
+    /**
+     * "this"
+     * "below" row
+     * @param below
+     * @return
+     */
+    String getBorderWithCellBelow(Border below){
+        getLineOfWidth(max(below.top, bottom))
+    }
+
+    Border copy(){
+        new Border(top, bottom, left, right)
+    }
+
+    static final Border EMPTY = getEmpty()
+
+    static Border getEmpty(){
+        new Border(0, 0, 0, 0)
+    }
 }

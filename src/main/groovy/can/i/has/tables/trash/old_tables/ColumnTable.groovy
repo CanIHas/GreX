@@ -1,7 +1,7 @@
-package can.i.has.tables
+package can.i.has.tables.trash.old_tables
 
 import can.i.has.latex.model.Renderable
-import can.i.has.tables.impl.RenderableBuilderContext
+import can.i.has.tables.trash.old_tables.impl.RenderableBuilderContext
 
 import groovy.transform.Canonical
 

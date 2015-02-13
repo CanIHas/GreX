@@ -8,6 +8,7 @@ class Command implements Renderable{
     String name
     List<String> options
     List<Renderable> args
+    Set<String> neededPackages = [].toSet()
 
     @Override
     String render() {
@@ -18,4 +19,5 @@ class Command implements Renderable{
             out << args.collect { "{${it.render()}}" }.join("")
         out.toString()
     }
+
 }
