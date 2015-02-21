@@ -4,7 +4,6 @@ import can.i.has.experiments.config.ConfigBatch
 import can.i.has.experiments.config.ConfigYield
 import can.i.has.experiments.runner.ExperimentRunner
 import can.i.has.experiments.storage.ResultsStorage
-import can.i.has.tables.trash.old_tables.ColumnTable
 import can.i.has.utils.OrderedMap
 
 import groovy.transform.Canonical
@@ -59,15 +58,15 @@ class Experiment<R extends Result> {
         }
     }
 
-    ColumnTable table(List<String> valueColNames, Map<String, Closure> extractors){
-        def params = configYield.params
-        def header = params + valueColNames
-        def data = []
-        resultsStorage.eachResult { R result ->
-            data << params.collect { result.key[it] } + valueColNames.collect {
-                extractors[it].call(result)
-            }
-        }
-        return new ColumnTable(header, data)
-    }
+//    ColumnTable table(List<String> valueColNames, Map<String, Closure> extractors){
+//        def params = configYield.params
+//        def header = params + valueColNames
+//        def data = []
+//        resultsStorage.eachResult { R result ->
+//            data << params.collect { result.key[it] } + valueColNames.collect {
+//                extractors[it].call(result)
+//            }
+//        }
+//        return new ColumnTable(header, data)
+//    }
 }

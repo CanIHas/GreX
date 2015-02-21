@@ -1,14 +1,18 @@
-package can.i.has.tables
+package can.i.has.tables.impl
 
-abstract class AbstractTable implements Table{
-    static final String NEWLINE = "\\\\ \n"
+import can.i.has.tables.Border
+import can.i.has.tables.Table
+
+abstract class AbstractTable<T> implements Table<T>{
+    static final String NEWLINE = "\\\\\n"
+
 
     @Override
     String render() {
         def out = "\\begin{tabular}{${'c'*sheet.columns}}\n" << ""
-        sheet.delegate.eachWithIndex { List row, int i ->
-            out << renderAboveRow(i)
-            out << renderRow(row, i) << NEWLINE
+        (sheet.rows).times { int rowIdx ->
+            out << renderAboveRow(rowIdx)
+            out << renderRow(rowIdx) << NEWLINE
         }
         out << renderAboveRow(sheet.rows)
         out << "\\end{tabular}"
@@ -19,15 +23,19 @@ abstract class AbstractTable implements Table{
         "\\multicolumn{1}{$borders}{$content}"
     }
 
-    protected String renderRow(List cells, int row) {
+    protected String renderRow(int row) {
         int height = sheet.rows //todo: maybe add width/height properties to Table API? ; remove sheet, add getAt(x, y)
         int width = sheet.columns
         def toJoin = []
-        cells.eachWithIndex { def entry, int i ->
-            Border border = sheetStyle.getBorder(row, i, height, width)
-            toJoin << cell("${border.leftSeparator}c${border.rightSeparator}", contentRenderer.renderCell(entry, row, i))
+        (width).times { int colIdx ->
+            toJoin << renderCell(sheet.getAt(row, colIdx), row, colIdx, height, width)
         }
         return toJoin.join(" & ")
+    }
+
+    protected String renderCell(def content, int row, int column, int height, int width){
+        Border border = sheetStyle.getBorder(row, column, height, width)
+        return cell("${border.leftSeparator}c${border.rightSeparator}", contentRenderer.renderCell(content, row, column))
     }
 
     protected String renderAboveRow(int row){

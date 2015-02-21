@@ -1,6 +1,7 @@
-package can.i.has.tables
+package can.i.has.tables.impl
 
 import can.i.has.latex.model.Renderable
+import can.i.has.tables.ContentRenderer
 
 
 class ToStringRenderer implements ContentRenderer{
@@ -8,6 +9,8 @@ class ToStringRenderer implements ContentRenderer{
     String renderCell(Object cellValue, int row, int col) {
         if (cellValue instanceof Renderable)
             return cellValue.render()
-        "$cellValue"
+         cellValue==null ? "": "$cellValue"
     }
+
+    static final ContentRenderer instance = new ToStringRenderer()
 }

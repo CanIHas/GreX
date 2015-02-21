@@ -2,11 +2,8 @@ package can.i.has.tables
 
 import can.i.has.latex.model.Renderable
 
-/**
- * TODO: THIS IS IT http://tex.stackexchange.com/questions/10121/how-to-make-double-cline-in-tables
- */
-interface Table extends Renderable{
-    Sheet getSheet()
+interface Table<T> extends Renderable{
+    Sheet<T> getSheet()// throws UnsupportedOperationException
     SheetStyle getSheetStyle()
     ContentRenderer getContentRenderer()
 }

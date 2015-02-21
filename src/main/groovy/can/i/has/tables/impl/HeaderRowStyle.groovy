@@ -1,9 +1,12 @@
-package can.i.has.tables
+package can.i.has.tables.impl
+
+import can.i.has.tables.Border
 
 import groovy.transform.Canonical
 
 @Canonical
-class SimpleHeaderStyle implements DefaultStyleTrait{
+class HeaderRowStyle implements DefaultStyleTrait{
+    //todo: this should extend UniformStyle
     int border = 1
     int headerToContent = 2
     int headerColumns = 0

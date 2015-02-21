@@ -1,4 +1,7 @@
-package can.i.has.tables
+package can.i.has.tables.impl
+
+import can.i.has.tables.Border
+import can.i.has.tables.SheetStyle
 
 trait DefaultStyleTrait implements SheetStyle{
     Border getDefaultBorder(){
