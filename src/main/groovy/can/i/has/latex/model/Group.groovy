@@ -6,9 +6,15 @@ import groovy.transform.Canonical
 class Group implements Renderable{
     List<Renderable> content
 
+
     @Override
     String render() {
         "{"+content.collect {it.render()}.join("""
 """)+"}"
+    }
+
+    @Override
+    Set<String> getNeededPackages() {
+        content.collect { it.neededPackages }.flatten().toSet()
     }
 }

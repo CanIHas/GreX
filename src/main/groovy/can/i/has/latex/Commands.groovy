@@ -10,6 +10,7 @@ class Commands {
         new Command("documentclass", options, [new StringRenderable(style)])
     }
 
+
     static Command begin(String text, Renderable... renderables){
         new Command("begin", [], [new StringRenderable(text)]+renderables.toList())
     }
@@ -26,5 +27,8 @@ class Commands {
         new Command("emph", [], [new StringRenderable(text)])
     }
 
+    static Command usePackage(String pkgName, String... options){
+        new Command("usepackage", options.toList(), [ new StringRenderable(pkgName) ])
+    }
 
 }

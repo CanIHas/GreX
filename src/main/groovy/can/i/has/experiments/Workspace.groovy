@@ -1,10 +1,16 @@
 package can.i.has.experiments
 
+import can.i.has.experiments.storage.DirBasedResultStorage
+import can.i.has.experiments.storage.ResultsStorage
+import can.i.has.experiments.storage.serialization.FSTSerializer
+import can.i.has.experiments.storage.serialization.ResultSerializer
 import can.i.has.utils.LaTeXCompilerUtils
 
-import groovy.transform.Canonical
+import groovy.transform.EqualsAndHashCode
+import groovy.transform.ToString
 
-@Canonical
+@EqualsAndHashCode
+@ToString
 class Workspace {
     final File root
 
@@ -13,6 +19,10 @@ class Workspace {
     final File rawDir
     final File dslDir
     final File buildDir
+
+    Workspace(String path){
+        this(new File(path))
+    }
 
     Workspace(File root) {
         this.root = root
@@ -83,6 +93,14 @@ class Workspace {
                     )
                 )
         }
+    }
+
+    public <R extends Result> ResultsStorage<R> newStorage(String name, ResultSerializer<R> serializer = new FSTSerializer<R>()){
+        new DirBasedResultStorage<R>(name, resultFile(name), serializer)
+    }
+
+    public <T> T using(Closure<T> closure){
+        Manager.instance.withWorkspace(this, closure)
     }
 
     @Singleton
