@@ -3,9 +3,10 @@
 > but best way to see what's what is reading tests - I'm usually providing test suite that is meant to cover
 > usual scenarios, so it can also be base for snippets.
 
-# LaTeX
+# GreX - Groovy experimentation suite
 
-Sometimes you need to implement some method, and you would like to research it a little.
+Sometimes you need to implement some method (classifier, clustering algorithm, some heurstic, etc), and you would
+like to research it a little.
 
 You'll need some framework for running experiments in which you'd like to try out different parameter values.
 Result persistence may be really important, if your experiments take some time.
@@ -15,6 +16,13 @@ data table structures, together with possibility of dumping them to LaTeX format
 
 So, why not go further? Here I am, trying to provide those LaTeX possibilities that I know (I'm quite a newbie
 to LaTeX, unfortunately) in form of Groovy library with builder API, together with some LaTeX document data model.
+
+# Status
+
+At this point I'm focused on majoring, so I spend most of my time on another project (broader approach to gender-based
+evolutionary algorithms). All tests are passing, yet I cannot say that this project is well-tested. Still, it should
+be working, even though many features are still missing (that should explain weird "holes" in existing model, e.g.
+concept od Workspace with subdirectories).
 
 # Usage
 
@@ -47,7 +55,7 @@ written with fluent API in mind. See linked tests, to get a grip.
 When you've got your *Document*, you can render it. Rendering means generating String with LaTeX code from
 data. At the moment render() returns String, but it will be saved in workspace.
 
-# Example
+# Existing example
 
 Just see [example package](/src/main/groovy/can/i/has/experiments/example), especially
 [Experiments script](/src/main/groovy/can/i/has/experiments/example/Experiments.groovy).
@@ -57,3 +65,8 @@ well-written, neither it is optimal, but it shows main use case in raw code.
 
 At this moment it is not complete, as many needed functionalities (table and graph models, their conversion
 to LaTeX, etc) are lacking, but I'm gonna fill it in.
+
+# Example under development
+
+At the moment I'm working on some evolutionary algorithm that I'd like to use for my majors degree. You can find it
+[here](https://github.com/PWr-Projects-For-Courses/Mgr).

@@ -53,6 +53,11 @@ class FullSearchYield<R extends Result> implements ConfigYield<R> {
     }
 
     @Override
+    void remove() {
+        //todo: refactor ConfigYield, it should be Iterable, not Iterator; also ConfigBatch needs ordering
+    }
+
+    @Override
     void retrieveResults(Map<OrderedMap, R> results) {
         // pass out gracefully after drinking too much
     }
