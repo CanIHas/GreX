@@ -1,16 +1,12 @@
 package can.i.has.latex
 
 import can.i.has.latex.model.Command
-import can.i.has.latex.model.Document
+import can.i.has.latex.model.Environment
 import can.i.has.latex.model.Renderable
 import can.i.has.latex.model.StringRenderable
 
 
-class FluentAPI {
-    static Document document(String style="article", List<String> options=[]){
-        new Document(new Command("documentclass", options, [text(style)]))
-    }
-
+class CommonAPI {
     static StringRenderable text(String txt){
         new StringRenderable(txt)
     }
@@ -23,6 +19,15 @@ class FluentAPI {
         new Command(name, options.toList(), [text(arg)])
     }
 
+    static Environment env(String name, Renderable... content){
+        new Environment(name, content.toList())
+    }
 
+    static Environment env(String name, List<Renderable> content){
+        new Environment(name, content)
+    }
 
+    static Environment documentEnv(){
+        new Environment("document", [])
+    }
 }

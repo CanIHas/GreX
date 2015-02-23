@@ -3,28 +3,35 @@ package can.i.has.latex.model
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 
-import static can.i.has.latex.Commands.documentClass as DC
-import static can.i.has.latex.Commands.usePackage
-import static can.i.has.latex.Groups.documentEnv
+import static can.i.has.latex.CommonAPI.documentEnv
+import static can.i.has.latex.ContentCommands.documentClass as DC
 
 @EqualsAndHashCode
 @ToString
 class Document implements Renderable{
     final Command documentClass
-    final List<Command> preamble = []
+    final Preamble preamble = new Preamble()
     final Environment env = documentEnv()
 
     Document(Command documentClass=DC(), List<Command> preamble=[], List<Renderable> content=[]) {
         this.documentClass = documentClass
-        this.preamble += preamble
+        this.preamble.commands += preamble
         this.env.content += content
     }
 
     @Override
     String render() {
-        ([documentClass] + neededPackages.collect {usePackage(it)} + preamble).collect { it.render() }.join("""
-""")+"""
-"""+env.render()
+            (
+                [ documentClass ] +
+                neededPackages.collect {
+                    usePackage(it)
+                } +
+                preamble
+            ).collect {
+                it.render()
+            }.join("\n")+
+            "\n"+
+            env.render()
     }
 
     @Override
@@ -41,7 +48,10 @@ class Document implements Renderable{
 //        } finally {
 //            c.delegate = oldDelegate
 //        }
-        c(preamble)
+        Closure toCall = c.clone()
+        toCall.delegate = preamble
+        toCall.resolveStrategy = Closure.DELEGATE_FIRST
+        toCall()
         this
     }
 
@@ -54,7 +64,10 @@ class Document implements Renderable{
 //        } finally {
 //            c.delegate = oldDelegate
 //        }
-        c(env.content)
+        Closure toCall = c.clone()
+        toCall.delegate = env
+        toCall.resolveStrategy = Closure.DELEGATE_FIRST
+        toCall()
         this
     }
 }

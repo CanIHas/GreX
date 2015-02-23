@@ -1,11 +1,15 @@
 package can.i.has.latex.model
 
+import can.i.has.latex.CommonAPI
+import can.i.has.latex.ContentCommands
+import can.i.has.utils.Settable
+
 import groovy.transform.Canonical
 
-import static can.i.has.latex.Commands.*
+import static can.i.has.latex.ContentCommands.*
 
 @Canonical
-class Environment extends Group{
+class Environment extends Group implements Settable<Renderable>{
     String name
     List<Renderable> beginArgs
     List<Renderable> endArgs
@@ -30,6 +34,23 @@ class Environment extends Group{
             end(name, endArgs.toArray() as Renderable[])
         ]).collect {it.render()}.join("""
 """)
+    }
 
+    @Override
+    List<Class> getDelegateClasses() {
+        [ContentCommands, CommonAPI]
+    }
+
+    @Override
+    void callback(Renderable result) {
+        content.add(result)
+    }
+
+    Environment with(Closure closure){
+        def toCall = closure.clone()
+        toCall.delegate = this
+        toCall.resolveStrategy = Closure.DELEGATE_FIRST
+        toCall()
+        this
     }
 }

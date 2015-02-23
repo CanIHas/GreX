@@ -123,7 +123,10 @@ class Workspace {
             Workspace oldWorkspace = activeWorkspace.get()
             try {
                 activeWorkspace.set(workspace)
-                return closure()
+                def toCall = closure.clone()
+                toCall.delegate = activeWorkspace.get()
+                toCall.resolveStrategy = Closure.DELEGATE_FIRST
+                return toCall()
             } finally {
                 activeWorkspace.set(oldWorkspace)
             }

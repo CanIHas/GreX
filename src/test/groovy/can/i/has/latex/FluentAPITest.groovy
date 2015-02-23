@@ -1,45 +1,33 @@
 package can.i.has.latex
 
+import can.i.has.latex.model.Document
 import can.i.has.latex.model.Renderable
 
-import static can.i.has.latex.Commands.*
-import static can.i.has.latex.FluentAPI.*
-import static can.i.has.latex.Groups.*
-
+import static can.i.has.latex.CommonAPI.env
 
 class FluentAPITest extends GroovyTestCase {
-    Map<String, Renderable> fixtures
 
-    void setUp(){
-        fixtures = [
-                '''
-\\documentclass{article}
+    void testFullDocument(){
+        assertEquals("""\\documentclass{article}
 \\someCommand[a,b]{c}
 \\begin{document}
 Hello, world
-\\end{document}
-''': document().withPreamble { preamble ->
-                    preamble.add command("someCommand", "c", "a", "b")
-                }.withContent { content ->
-                    content.add text("Hello, world")
-                },
-            '''
-\\begin{z}
+\\end{document}""", new Document().withPreamble {
+            command("someCommand", "c", "a", "b")
+        }.withContent {
+            text("Hello, world")
+        }.render().trim())
+    }
+
+    void testEnvironment(){
+        assertEquals("""\\begin{z}
 \\emph{Ala ma kota}
 \\\\
 a kot ma Ale
-\\end{z}
-''': env("z", [
-    emph("Ala ma kota"),
-    newline(),
-    text("a kot ma Ale")
-])
-        ]
-    }
-
-    void testRender() {
-        fixtures.each { String expected, Renderable renderable ->
-            assert expected.trim() == renderable.render().trim()
-        }
+\\end{z}""", env("z").with {
+            emph("Ala ma kota")
+            newline()
+            text("a kot ma Ale")
+        }.render().trim())
     }
 }

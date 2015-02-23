@@ -11,8 +11,8 @@ import can.i.has.experiments.example.knn.ResultInput
 import can.i.has.experiments.example.model.DataSet
 import can.i.has.experiments.example.model.DataSetResources
 import can.i.has.experiments.runner.SingleThreadExperimentRunner
+import can.i.has.latex.model.Document
 import can.i.has.utils.OrderedMap
-import static can.i.has.latex.FluentAPI.*
 
 new Workspace("./workspace").using {
     def params = [
@@ -49,7 +49,7 @@ new Workspace("./workspace").using {
             weightedWithDistance: ResultInput.weightedWithDistance
         ]
     ]
-    println document().withContent { content ->
+    println new Document().withContent { content ->
         content.add new Experiment<Evaluation>(
             name: "all_knn",
             configYield: new FullSearchYield<Evaluation>(params, domains, values)

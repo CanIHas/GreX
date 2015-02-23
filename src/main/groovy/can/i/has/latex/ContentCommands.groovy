@@ -5,7 +5,7 @@ import can.i.has.latex.model.Renderable
 import can.i.has.latex.model.StringRenderable
 
 
-class Commands {
+class ContentCommands {
     static Command documentClass(String style="article", List<String> options=[]){
         new Command("documentclass", options, [new StringRenderable(style)])
     }
@@ -27,8 +27,12 @@ class Commands {
         new Command("emph", [], [new StringRenderable(text)])
     }
 
-    static Command usePackage(String pkgName, String... options){
-        new Command("usepackage", options.toList(), [ new StringRenderable(pkgName) ])
+    static Command tableOfContents(){
+        new Command("tableofcontents")
+    }
+
+    static Command title(){
+        new Command("maketitle")
     }
 
 }
