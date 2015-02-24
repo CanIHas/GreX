@@ -1,6 +1,9 @@
 package can.i.has.latex
 
 import can.i.has.latex.model.*
+import can.i.has.latex.model.contents.StringRenderable
+import can.i.has.latex.model.structure.Command
+import can.i.has.latex.model.structure.Environment
 
 class ModelTest extends GroovyTestCase {
     Map<String, Renderable> fixtures

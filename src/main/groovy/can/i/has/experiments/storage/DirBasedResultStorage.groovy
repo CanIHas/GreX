@@ -3,11 +3,9 @@ package can.i.has.experiments.storage
 import can.i.has.experiments.Result
 import can.i.has.experiments.storage.serialization.FSTSerializer
 import can.i.has.experiments.storage.serialization.ResultSerializer
-import can.i.has.latex.model.StringRenderable
 import can.i.has.utils.OrderedMap
 
 import groovy.io.FileType
-import groovy.json.JsonBuilder
 import groovy.transform.Canonical
 
 @Canonical

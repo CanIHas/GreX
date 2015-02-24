@@ -1,9 +1,8 @@
 package can.i.has.latex
 
 import can.i.has.latex.model.Document
-import can.i.has.latex.model.Renderable
 
-import static can.i.has.latex.CommonAPI.env
+import static can.i.has.latex.model.fluent.StructureAPI.env
 
 class FluentAPITest extends GroovyTestCase {
 
