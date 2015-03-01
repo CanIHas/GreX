@@ -1,6 +1,6 @@
 package can.i.has.utils
 
-import can.i.has.experiments.Workspace
+import can.i.has.grex.Workspace
 
 import groovy.json.JsonBuilder
 

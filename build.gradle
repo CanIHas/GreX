@@ -6,7 +6,7 @@ apply plugin: 'application'
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
-mainClassName = "can.i.has.experiments.example.Experiments"
+mainClassName = "can.i.has.grex.experiments.example.Experiments"
 
 repositories {
     mavenCentral()
