@@ -14,7 +14,11 @@ class Workspace {
     List<Document> documents = []
 
     void setRoot(String root){
-        root = new File(root)
+        this.root = new File(root)
+    }
+
+    void setRoot(File root){
+        this.root = root
     }
 
     File getResultsDir(){

@@ -23,7 +23,7 @@ class CompilationHelper {
     }
 
     static String escape(String latex){
-        latex.replaceAll("[#\$%&\\^_{}~]\n", {
+        latex.replaceAll("[#\$%&\\^_{}~\n]", {
             switch (it) {
                 case "\\": return "\\textbackslash{}"
                 case "^": return "\\textasciicircum{}"
@@ -51,7 +51,8 @@ class CompilationHelper {
 
     static Renderable raw(Node node){
         def attrs = MapArgsUtils.leaveArgs(null, node.attributes(), "path", "escape", "neededPackages")
-        boolean escape = attrs.escape?: false
+        //todo: if extension is "tex" and there is no explicit "escape" arg then assume it should be true
+        boolean escape = attrs.escape ?: false
         Collection<String> neededPackages = attrs.neededPackages ?: []
         def path
         if (node.value()) {

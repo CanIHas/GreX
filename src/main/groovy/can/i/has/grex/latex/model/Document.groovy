@@ -1,6 +1,7 @@
 package can.i.has.grex.latex.model
 
 import can.i.has.grex.Workspace
+import can.i.has.grex.compiler.CompilationHelper
 import can.i.has.grex.latex.model.contents.StringRenderable
 import can.i.has.grex.latex.model.structure.Command
 import can.i.has.grex.latex.model.structure.Environment
@@ -41,10 +42,11 @@ class Document implements Renderable {
 
     @Override
     String render(Workspace workspace) {
+        def tempBuilder = new NodeBuilder()
         ( [
             documentclass.render(workspace),
         ] + neededPackages.collect {
-            usePackage(it).render(workspace)
+            CompilationHelper.usePackage(tempBuilder.usePackage(it)).render(workspace)
         } + preamble.render(workspace) +
             body.render(workspace) ).join("\n")
     }

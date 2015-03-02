@@ -12,7 +12,7 @@ class Group implements Renderable, WithContent<List<Renderable>> {
 
     @Override
     String render(Workspace workspace) {
-        content.collect {it.render()}.join("\n")
+        content.collect {it.render(workspace)}.join("\n")
     }
 
     @Override

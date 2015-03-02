@@ -19,7 +19,7 @@ class Command implements Renderable{
         if (options)
             out << "[" << options.join(",") << "]"
         if (args)
-            out << args.collect { "{${it.render()}}" }.join("")
+            out << args.collect { "{${it.render(workspace)}}" }.join("")
         out.toString()
     }
 

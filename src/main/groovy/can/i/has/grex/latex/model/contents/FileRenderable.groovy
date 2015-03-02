@@ -14,7 +14,7 @@ class FileRenderable implements Renderable{
 
     @Override
     String render(Workspace workspace) {
-        def text = workspace.rawFile(path.toArray()).text
+        def text = workspace.rawFile(path.toArray() as String[]).text.trim()
         escape ? CompilationHelper.escape(text) : text
     }
 
