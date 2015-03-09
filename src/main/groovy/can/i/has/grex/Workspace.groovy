@@ -21,6 +21,14 @@ class Workspace {
         this.root = root
     }
 
+//    void setRoot(def root){
+//        assert root instanceof String || root instanceof File
+//        def r = root
+//        if (r instanceof String)
+//            r = new File(r)
+//        this.root = r
+//    }
+
     File getResultsDir(){
         new File(root, "results")
     }

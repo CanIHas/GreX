@@ -14,7 +14,7 @@ class GreXCompilationTest extends GroovyTestCase {
 
     void setUp(){
         expected = new Workspace()
-        expected.root = "root"
+        expected.setRoot("root")
         def doc = new Document()
         doc.documentclass = new Command("documentclass", [], [new StringRenderable("clazz")])
         doc.preamble = new Preamble()

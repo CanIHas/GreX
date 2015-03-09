@@ -17,20 +17,20 @@ import static can.i.has.utils.MapArgsUtils.leaveArgs
 class Document implements Renderable {
     String name
     //ugly name, but for the sake of latex consistency we'll keep it
-    Command documentclass = new Command("documentclass", [], [new StringRenderable("article")])
+    private Command documentClass = new Command("documentclass", [], [new StringRenderable("article")])
     Preamble preamble
     Environment body
 
     Command getDocumentclass() {
-        return documentclass
-    }
-
-    void setDocumentclass(Command documentClass) {
-        this.documentclass = documentClass
+        return documentClass
     }
 
     void setDocumentclass(String style) {
-        documentclass = new Command("documentclass", [], [new StringRenderable(style)])
+        documentClass = new Command("documentclass", [], [new StringRenderable(style)])
+    }
+
+    void setDocumentclass(Command documentClass) {
+        this.documentClass = documentClass
     }
 
     void setDocumentclass(Map args) {

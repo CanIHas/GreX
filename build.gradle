@@ -1,20 +1,26 @@
-apply plugin: 'groovy'
-apply plugin: 'idea'
-apply plugin: 'maven'
-apply plugin: 'application'
+plugins {
+    id 'groovy'
+    id 'idea'
+    id 'maven'
+    id 'maven-publish'
+    id 'com.jfrog.bintray' version '1.0'
+    id 'application'
+}
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
+version = '0.1-SNAPSHOT'
 
-mainClassName = "can.i.has.grex.experiments.example.Experiments"
+mainClassName = "can.i.has.experiments.example.Experiments"
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
     // Common dependencies
-    compile 'org.codehaus.groovy:groovy-all:2.4.0'
+    compile localGroovy()
     compile 'org.slf4j:slf4j-api:1.7.2'
     compile 'de.ruedigermoeller:fst:2.20'
 
@@ -28,6 +34,71 @@ test {
     useJUnit()
 }
 
-task wrapper(type: Wrapper){
-    gradleVersion = '1.12'
+task javadocJar(type: Jar, dependsOn: groovydoc) {
+    from "${buildDir}/docs/groovydoc"
+    classifier = 'javadoc'
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+ext {
+    description=""
+    group=project.group
+    version=project.version
+    pom.url="https://github.com/CanIHas/GreX"
+    pom.scm.url="https://github.com/CanIHas/GreX"
+    pom.scm.connection="scm:git:https://github.com/CanIHas/GreX"
+    pom.license.name="The MIT License"
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+            pom.withXml {
+                asNode().children().last() + {
+                    resolveStrategy = DELEGATE_FIRST
+                    name project.name
+                    description project.description
+                    url project.property('pom.url')
+                    scm {
+                        url project.property('pom.scm.url')
+                        connection project.property('pom.scm.connection')
+                    }
+                    licenses {
+                        license {
+                            name project.property('pom.license.name')
+                            distribution 'repo'
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+bintray {
+    user = System.getenv('BINTRAY_USER') ?: project.properties.bintray_username
+    key  = System.getenv('BINTRAY_KEY')  ?: project.properties.bintray_api_key
+    publications = ['maven']
+    pkg {
+        repo = 'maven'
+        name = project.name
+        version {
+            attributes = ['gradle-plugin': 'org.hidetake.slash:org.hidetake:gradle-slash']
+        }
+    }
+}
+
+tasks.bintrayUpload.doFirst {
+    assert !project.version.contains('SNAPSHOT')
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
 }

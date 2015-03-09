@@ -94,7 +94,7 @@ class GreXCompiler {
             node.attributes().each { String k, def v ->
                 if (v instanceof Node)
                     v = compile(v)
-                out."$k" = v
+                out."set${k.capitalize()}"(v)
             }
 
             return out
