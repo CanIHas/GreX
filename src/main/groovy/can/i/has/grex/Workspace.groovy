@@ -6,6 +6,9 @@ import can.i.has.grex.experiments.storage.DirBasedResultStorage
 import can.i.has.grex.experiments.storage.ResultsStorage
 import can.i.has.grex.experiments.storage.serialization.FSTSerializer
 import can.i.has.grex.experiments.storage.serialization.ResultSerializer
+import can.i.has.grex.latex.model.Document
+
+import groovy.transform.Canonical
 
 @Canonical
 class Workspace {
@@ -20,14 +23,6 @@ class Workspace {
     void setRoot(File root){
         this.root = root
     }
-
-//    void setRoot(def root){
-//        assert root instanceof String || root instanceof File
-//        def r = root
-//        if (r instanceof String)
-//            r = new File(r)
-//        this.root = r
-//    }
 
     File getResultsDir(){
         new File(root, "results")
@@ -80,74 +75,35 @@ class Workspace {
         }
         if (!out.exists()) {
             out.parentFile.mkdirs()
-            out.text = ""
+            out.createNewFile()
         }
         out
     }
 
-//    void compile(String... path){
-//        LaTeXCompilerUtils.compile(renderFile(path), buildFile(path.reverse().tail().reverse()))
-//    }
-//
-//    static String[] dirPath(String... path){
-//        path[0..-2]
-//    }
-//
-//    static String[] relativePath(File root, File file){
-//        root.toURI().relativize( file.toURI() ).toString().split(File.separator)
-//    }
+    String toLatex(String name){
+        def doc = documents.find { it.name == name }
+        assert doc //todo: exception
+        doc.render(this)
+    }
 
-//    void compileAll(){
-//        renderDir.eachFileRecurse { File f ->
-//            if (f.file)
-//                LaTeXCompilerUtils.compile(f,
-//                    buildFile(
-//                        dirPath(
-//                            relativePath(
-//                                renderDir,
-//                                f
-//                            )
-//                        )
-//                    )
-//                )
-//        }
-//    }
-//
-//    public <T> T using(Closure<T> closure){
-//        Manager.instance.withWorkspace(this, closure)
-//    }
+    Map<String, String> allToLatex(){
+        def out = [:]
+        documents.each {
+            out[it.name] = it.render(this)
+        }
+        out
+    }
 
-//    @Singleton
-//    static class Manager {
-//
-//        static protected ThreadLocal<Workspace> activeWorkspace
-//
-//        static Workspace getActiveWorkspace() {
-//            def out = activeWorkspace.get()
-//            assert out != null        // todo: dedicated exception
-//            out
-//        }
-//
-//        static {
-//            activeWorkspace = new ThreadLocal<>()
-//            activeWorkspace.set(null)
-//        }
-//
-//        public <T> T withWorkspace(Workspace workspace, Closure<T> closure) {
-//            Workspace oldWorkspace = activeWorkspace.get()
-//            try {
-//                activeWorkspace.set(workspace)
-//                def toCall = closure.clone()
-//                toCall.delegate = activeWorkspace.get()
-//                toCall.resolveStrategy = Closure.DELEGATE_FIRST
-//                return toCall()
-//            } finally {
-//                activeWorkspace.set(oldWorkspace)
-//            }
-//        }
-//    }
+    void render(String name, String extension=".tex"){
+        renderFile(name+extension).text = toLatex(name)
+    }
+
+    void renderAll(String extension=".tex"){
+        allToLatex().each { String name, String latex ->
+            renderFile(name).text = latex
+        }
+    }
+
+    //todo: building
+
 }
-
-import can.i.has.grex.latex.model.Document
-
-import groovy.transform.Canonical
