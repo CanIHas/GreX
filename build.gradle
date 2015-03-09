@@ -4,14 +4,12 @@ plugins {
     id 'maven'
     id 'maven-publish'
     id 'com.jfrog.bintray' version '1.0'
-    id 'application'
 }
 
+group="can.i.has"
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
-version = '0.1-SNAPSHOT'
-
-mainClassName = "can.i.has.experiments.example.Experiments"
+version = '0.1'
 
 repositories {
     mavenCentral()
@@ -44,16 +42,6 @@ task sourcesJar(type: Jar) {
     classifier = 'sources'
 }
 
-ext {
-    description=""
-    group=project.group
-    version=project.version
-    pom.url="https://github.com/CanIHas/GreX"
-    pom.scm.url="https://github.com/CanIHas/GreX"
-    pom.scm.connection="scm:git:https://github.com/CanIHas/GreX"
-    pom.license.name="The MIT License"
-}
-
 publishing {
     publications {
         maven(MavenPublication) {
@@ -65,14 +53,14 @@ publishing {
                     resolveStrategy = DELEGATE_FIRST
                     name project.name
                     description project.description
-                    url project.property('pom.url')
+                    url "https://github.com/CanIHas/GreX"
                     scm {
-                        url project.property('pom.scm.url')
-                        connection project.property('pom.scm.connection')
+                        url "https://github.com/CanIHas/GreX"
+                        connection "scm:git:https://github.com/CanIHas/GreX"
                     }
                     licenses {
                         license {
-                            name project.property('pom.license.name')
+                            name "The MIT License"
                             distribution 'repo'
                         }
                     }
@@ -89,9 +77,7 @@ bintray {
     pkg {
         repo = 'maven'
         name = project.name
-        version {
-            attributes = ['gradle-plugin': 'org.hidetake.slash:org.hidetake:gradle-slash']
-        }
+        version project.version
     }
 }
 
