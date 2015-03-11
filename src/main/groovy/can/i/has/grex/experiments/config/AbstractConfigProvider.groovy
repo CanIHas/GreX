@@ -1,9 +1,7 @@
-package can.i.has.grex.experiments.new_model.config
+package can.i.has.grex.experiments.config
 
 import can.i.has.grex.experiments.Result
 import can.i.has.grex.experiments.runner.ExperimentRunner
-import can.i.has.utils.OrderedMap
-
 
 abstract class AbstractConfigProvider<R extends Result> implements ConfigProvider<R>{
 

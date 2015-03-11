@@ -1,4 +1,4 @@
-package can.i.has.grex.experiments.new_model.config
+package can.i.has.grex.experiments.config
 
 import can.i.has.grex.experiments.Result
 import can.i.has.grex.experiments.runner.ExperimentRunner
@@ -11,7 +11,13 @@ import groovy.transform.Canonical
 class FullSearchProvider<R extends Result> extends AbstractConfigProvider<R> {
     List<String> params
     Map<String, List> domains
-    Map<String, Map<String, Object>> values = [:]
+    /**
+     * Map String -> (Closure or Map<String, Object>)
+     * if value is Closure, it should have signature (String key) and should be called to get entity for key
+     * else, if it is Map, symbolic param value should be used as key, and retrieved value should be used
+     * as config entity.
+     */
+    Map<String, Object> values = [:]
 
     @Override
     protected AbstractConfigProvider.ProviderRun<R> getNewRun() {
@@ -44,10 +50,12 @@ class FullSearchProvider<R extends Result> extends AbstractConfigProvider<R> {
                 def usableConfig = new OrderedMap(symbolicConfig.@order, [:])
                 symbolicConfig.each { String paramKey, Object paramValueName ->
                     if (values.containsKey(paramKey)) {
-                        assert values[paramKey].containsKey(paramValueName)
-                        def val = values[paramKey][paramValueName]
-                        if (val instanceof Closure)
-                            val = val.call(paramValueName)
+                        assert values[paramKey] instanceof Closure || values[paramKey] instanceof Map
+                        def val
+                        if (values[paramKey] instanceof Closure)
+                            val = values[paramKey].call(paramValueName)
+                        else
+                            val = values[paramKey][paramValueName]
                         usableConfig[paramKey] = val
                     }
                     else {

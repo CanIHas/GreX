@@ -1,10 +1,9 @@
-package can.i.has.grex.experiments.new_model
+package can.i.has.grex.experiments
 
 import can.i.has.grex.TestConstants
+import can.i.has.grex.experiments.Experiment
 import can.i.has.grex.experiments.Result
-import can.i.has.grex.experiments.new_model.config.Config
-import can.i.has.grex.experiments.new_model.config.FullSearchProvider
-import can.i.has.grex.experiments.runner.SingleThreadExperimentRunner
+import can.i.has.grex.experiments.config.Config
 import can.i.has.grex.experiments.storage.InMemoryStorage
 import can.i.has.grex.experiments.storage.ResultsStorage
 import can.i.has.utils.OrderedMap

@@ -1,9 +1,9 @@
 package can.i.has.grex.compiler
 
 import can.i.has.grex.Workspace
-import can.i.has.grex.experiments.new_model.config.ConfigProvider
-import can.i.has.grex.experiments.new_model.config.FullSearchProvider
-import can.i.has.grex.experiments.new_model.Experiment
+import can.i.has.grex.experiments.config.ConfigProvider
+import can.i.has.grex.experiments.config.FullSearchProvider
+import can.i.has.grex.experiments.Experiment
 import can.i.has.grex.experiments.runner.ExperimentRunner
 import can.i.has.grex.experiments.runner.SingleThreadExperimentRunner
 import can.i.has.grex.latex.model.Document
