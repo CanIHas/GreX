@@ -76,14 +76,14 @@ bintray {
     publications = ['maven']
     pkg {
         repo = 'maven'
-        name = project.name
-        version project.version
+        name = project.name + ("${project.version}".endsWith("-SNAPSHOT") ? "-SNAPSHOT" : "")
+        version project.version.replaceAll("-SNAPSHOT", "")
     }
 }
 
-tasks.bintrayUpload.doFirst {
-    assert !project.version.contains('SNAPSHOT')
-}
+//tasks.bintrayUpload.doFirst {
+//    assert !project.version.contains('SNAPSHOT')
+//}
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.3'
