@@ -8,6 +8,6 @@ class WorkspaceTest extends GroovyTestCase {
         def doc = documentWithEntites
         temp.documents.add doc
         temp.render(doc.name)
-        assert temp.renderFile(doc.name+".tex").text == expectedLatex
+        assertEquals(expectedLatex, temp.renderFile(doc.name+".tex").text)
     }
 }

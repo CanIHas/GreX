@@ -1,7 +1,7 @@
 package can.i.has.grex.experiments
 
 import can.i.has.grex.experiments.condition.Condition
-import can.i.has.grex.experiments.config.ConfigYield
+import can.i.has.grex.experiments.old_model.config.ConfigYield
 import can.i.has.grex.experiments.storage.ResultsStorage
 import can.i.has.utils.OrderedMap
 

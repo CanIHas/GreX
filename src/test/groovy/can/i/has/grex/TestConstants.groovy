@@ -1,5 +1,9 @@
 package can.i.has.grex
 
+import can.i.has.grex.experiments.Result
+import can.i.has.grex.experiments.new_model.Experiment
+import can.i.has.grex.experiments.new_model.config.FullSearchProvider
+import can.i.has.grex.experiments.runner.SingleThreadExperimentRunner
 import can.i.has.grex.latex.model.Document
 import can.i.has.grex.latex.model.contents.FileRenderable
 import can.i.has.grex.latex.model.contents.StringRenderable
@@ -13,6 +17,25 @@ import can.i.has.grex.latex.model.structure.Preamble
 class TestConstants {
     static String getExpectedLatex(){
         TestConstants.classLoader.getResourceAsStream("expected.tex").text
+    }
+
+    static <R> Experiment<R> getExampleExperiment(Closure<R> expBody){
+        new Experiment(
+            "experimentAndFullSearch",
+            expBody,
+            new FullSearchProvider<R>(
+                ["a", "b", "c"],
+                [
+                    a: [1, 2],
+                    b: ["3", "4"],
+                    c: ["x", "y"]
+                ],
+                [
+                    c: [x: 5, y: "6"]
+                ]
+            ),
+            new SingleThreadExperimentRunner()
+        )
     }
 
     static Workspace getTempWorkspace(){
@@ -54,16 +77,34 @@ class TestConstants {
         out
     }
 
-    static Workspace getWorkspaceWithEntities(){
+    static <R extends Result> Workspace getWorkspaceWithEntities(Closure<R> expBody=null){
         Workspace out = new Workspace()
         out.setRoot("root")
         out.documents.add documentWithEntites
+        out.experiments.add getExampleExperiment(expBody)
         out
     }
 
-    static Workspace getWorkspaceWithGreX(){
+    static <R extends Result> Workspace getWorkspaceWithGreX(Closure<R> expBody=null){
         new GreX().eval {
             workspace(root: "root") {
+                experiments {
+                    experiment(name: "experimentAndFullSearch") {
+                        experimentBody = expBody
+                        config = fullSearch {
+                            params = ["a", "b", "c"]
+                            domains = [
+                                a: [1, 2],
+                                b: ["3", "4"],
+                                c: ["x", "y"]
+                            ]
+                            values = [
+                                c: [x: 5, y: "6"]
+                            ]
+                        }
+                        runner = singleThread()
+                    }
+                }
                 documents {
                     document(name: "doc1", documentclass: "clazz") {
                         preamble(title: "Title") {
@@ -72,7 +113,7 @@ class TestConstants {
                             usePackage("somepkg")
                             usePackage(package: "anotherpkg", options: ["op1", "op2"])
                         }
-                        body {
+                        documentBody {
                             title()
                             paperAbstract {
                                 text "abstract text"

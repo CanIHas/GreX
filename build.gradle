@@ -9,7 +9,7 @@ plugins {
 group="can.i.has"
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
-version = '0.1'
+version = '0.2-SNAPSHOT'
 
 repositories {
     mavenCentral()

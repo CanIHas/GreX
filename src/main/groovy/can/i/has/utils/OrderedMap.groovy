@@ -7,31 +7,43 @@ class OrderedMap<T> implements Map<String, T>, Serializable{
     List<String> order
     @Delegate Map<String, T> delegate
 
+    List<T> listView(){
+        new AbstractList<T>(){
+
+            @Override
+            T get(int i) {
+                OrderedMap.this.@delegate.get(OrderedMap.this.@order[i])
+            }
+
+            @Override
+            public T set(int index, T element) {
+                OrderedMap.this.@delegate.put(OrderedMap.this.@order[index], element)
+            }
+
+            @Override
+            public T remove(int index) {
+                OrderedMap.this.@delegate.remove(OrderedMap.this.@order[index])
+            }
+
+            @Override
+            int size() {
+                OrderedMap.this.@order.size()
+            }
+        }
+    }
+
     boolean containsKey(Integer i) {
         return i<this.@order.size()
-    }
-
-    T get(Integer i) {
-        return this.@delegate.get(this.@order.get(i))
-    }
-
-    T put(Integer i, T value) {
-        return this.@delegate.put(this.@order.get(i), value)
-    }
-
-    T remove(Integer i) {
-        return this.@delegate.remove(this.@order.remove(i))
     }
 
     @Override
     void putAll(Map<? extends String, ? extends T> m) { // first generic parameter may be int or string
         m.each { i, v ->
-            this.put(i, v)
+            if (i instanceof Integer)
+                this.listView().set(i, v)
+            else
+                this.@delegate.put(i, v)
         }
-    }
-
-    Set<Integer> indicesSet() {
-        return [0..this.@order.size()-1]
     }
 
     void trim(){
@@ -55,10 +67,28 @@ class OrderedMap<T> implements Map<String, T>, Serializable{
     }
 
     OrderedMap<T> each(Closure closure){
-        this.@delegate.each closure
+        this.@delegate.each(closure)
+        this
     }
 
     List valuesList(){
         this.@order.collect { this.@delegate.get(it) }
+    }
+
+    boolean equals(o) {
+        if (this.is(o)) return true
+        if (getClass() != o.class) return false
+
+        OrderedMap that = (OrderedMap) o
+
+        if (listView() != that.listView()) return false
+
+        return true
+    }
+
+    int hashCode() {
+        int result
+        result = 7 + 11*listView().hashCode()
+        return result
     }
 }

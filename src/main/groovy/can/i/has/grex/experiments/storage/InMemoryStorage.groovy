@@ -7,6 +7,7 @@ import groovy.transform.Canonical
 
 @Canonical
 class InMemoryStorage<R extends Result> implements ResultsStorage<R>{
+    String name
     Map<OrderedMap<String>, R> delegate
 
     @Override

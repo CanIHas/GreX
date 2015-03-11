@@ -1,7 +1,11 @@
 package can.i.has.grex.compiler
 
 import can.i.has.grex.Workspace
-import can.i.has.grex.experiments.Experiment
+import can.i.has.grex.experiments.new_model.config.ConfigProvider
+import can.i.has.grex.experiments.new_model.config.FullSearchProvider
+import can.i.has.grex.experiments.new_model.Experiment
+import can.i.has.grex.experiments.runner.ExperimentRunner
+import can.i.has.grex.experiments.runner.SingleThreadExperimentRunner
 import can.i.has.grex.latex.model.Document
 import can.i.has.grex.latex.model.Renderable
 import can.i.has.grex.latex.model.contents.StringRenderable
@@ -23,15 +27,21 @@ class GreXCompiler {
         document: defaultCompilerMethod(Document),
         preamble: defaultCompilerMethod(Preamble),
         usePackage: CompilationHelper.&usePackage,
-        body: namedEnv("document"),
+        documentBody: namedEnv("document"),
         text: CompilationHelper.&text,
         raw: CompilationHelper.&raw,
-        title: nodeAsParameterlessFunction("maketitle"),
-        tableOfContents: nodeAsParameterlessFunction("tableofcontents"),
+        title: nodeAsParameterlessFunction({ new Command("maketitle") }),
+        tableOfContents: nodeAsParameterlessFunction({ new Command("tableofcontents") }),
         command: this.&command,
         env: defaultCompilerMethod(Environment),
         paperAbstract: namedEnv("abstract"),
         documentSection: defaultCompilerMethod(DocumentSection), // named sections are defined in constructor
+        experiment: defaultCompilerMethod(Experiment),
+        experimentBody: placeholder(Closure),
+        config: placeholder(ConfigProvider),
+        runner: placeholder(ExperimentRunner),
+        fullSearch: defaultCompilerMethod(FullSearchProvider),
+        singleThread: nodeAsParameterlessFunction({ new SingleThreadExperimentRunner() })
     ]
 
     GreXCompiler() {
@@ -43,6 +53,13 @@ class GreXCompiler {
 //todo: development only, remove in future
     public <T> Closure<T> dummyCompilerMethod(){
         return { Node node -> null }
+    }
+
+    public <T> Closure<T> placeholder(Class<T> clazz, boolean notNull=false){
+        return { Node node ->
+            assert node.value() == null || !notNull || clazz.isInstance(node.value())
+            return node.value()
+        }
     }
 
     public <T> Closure<List<T>> valueListExtractor(Class<T> elementClass){
@@ -101,11 +118,11 @@ class GreXCompiler {
         }
     }
 
-    Closure<Command> nodeAsParameterlessFunction(String commandName){
+    public <T> Closure<T> nodeAsParameterlessFunction(Closure<T> closure){
         return { Node node ->
             assert node.attributes().isEmpty() //todo: exceptions
             assert !node.value()
-            new Command(commandName)
+            closure.call(node.name())
         }
     }
 

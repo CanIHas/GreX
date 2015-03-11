@@ -21,6 +21,10 @@ class Document implements Renderable {
     Preamble preamble
     Environment body
 
+    void setDocumentBody(Environment body){
+        this.body = body
+    }
+
     Command getDocumentclass() {
         return documentClass
     }

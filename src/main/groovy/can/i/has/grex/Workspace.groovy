@@ -1,6 +1,6 @@
 package can.i.has.grex
 
-import can.i.has.grex.experiments.Experiment
+import can.i.has.grex.experiments.old_model.Experiment
 import can.i.has.grex.experiments.Result
 import can.i.has.grex.experiments.storage.DirBasedResultStorage
 import can.i.has.grex.experiments.storage.ResultsStorage

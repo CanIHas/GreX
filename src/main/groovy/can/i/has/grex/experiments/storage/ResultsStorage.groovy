@@ -4,6 +4,9 @@ import can.i.has.grex.experiments.Result
 import can.i.has.utils.OrderedMap
 
 trait ResultsStorage<R extends Result>{
+    abstract String getName()
+    abstract void setName(String name)
+
     abstract boolean contains(OrderedMap<String> key)
 
     abstract R getAt(OrderedMap<String> key)
