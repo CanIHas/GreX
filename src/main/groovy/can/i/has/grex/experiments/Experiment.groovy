@@ -1,9 +1,8 @@
-package can.i.has.grex.experiments.new_model
+package can.i.has.grex.experiments
 
 import can.i.has.grex.Workspace
-import can.i.has.grex.experiments.Result
-import can.i.has.grex.experiments.new_model.config.Config
-import can.i.has.grex.experiments.new_model.config.ConfigProvider
+import can.i.has.grex.experiments.config.Config
+import can.i.has.grex.experiments.config.ConfigProvider
 import can.i.has.grex.experiments.runner.ExperimentRunner
 import can.i.has.grex.experiments.storage.ResultsStorage
 

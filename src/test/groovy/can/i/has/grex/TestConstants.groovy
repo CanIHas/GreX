@@ -1,8 +1,8 @@
 package can.i.has.grex
 
 import can.i.has.grex.experiments.Result
-import can.i.has.grex.experiments.new_model.Experiment
-import can.i.has.grex.experiments.new_model.config.FullSearchProvider
+import can.i.has.grex.experiments.Experiment
+import can.i.has.grex.experiments.config.FullSearchProvider
 import can.i.has.grex.experiments.runner.SingleThreadExperimentRunner
 import can.i.has.grex.latex.model.Document
 import can.i.has.grex.latex.model.contents.FileRenderable

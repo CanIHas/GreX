@@ -1,6 +1,6 @@
 package can.i.has.grex
 
-import can.i.has.grex.experiments.old_model.Experiment
+import can.i.has.grex.experiments.Experiment
 import can.i.has.grex.experiments.Result
 import can.i.has.grex.experiments.storage.DirBasedResultStorage
 import can.i.has.grex.experiments.storage.ResultsStorage
@@ -94,6 +94,7 @@ class Workspace {
         out
     }
 
+    //todo: change name to documentName
     void render(String name, String extension=".tex"){
         renderFile(name+extension).text = toLatex(name)
     }
@@ -101,6 +102,18 @@ class Workspace {
     void renderAll(String extension=".tex"){
         allToLatex().each { String name, String latex ->
             renderFile(name).text = latex
+        }
+    }
+
+    void perform(String experimentName){
+        def ex = experiments.find { it.name==experimentName }
+        assert ex
+        ex.perform(this)
+    }
+
+    void performAll(){
+        experiments.each {
+            it.perform(this)
         }
     }
 
